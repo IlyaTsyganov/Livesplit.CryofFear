@@ -1,4 +1,4 @@
-//v1.2
+
 state("cof")
 {
     float pausestate: "hw.dll",0x11119E4;
@@ -26,8 +26,6 @@ init
     vars.maps=0;
     vars.chapters=0;
     //vars.savetime=0;
-    
-    
 }
 
 startup
@@ -46,9 +44,12 @@ startup
 
 start
 {
-
-    if((current.map=="c_nightmare.bsp" && current.loadingstate==0)
-    ||(current.map=="c_doc_city.bsp" && current.loadingstate==0)
+    if((current.map=="c_nightmare.bsp" && current.loadingstate==0)// main campaign
+    ||(current.map=="c_doc_city.bsp" && current.loadingstate==0)// doc mode
+    ||(current.map=="c_rumpel1.bsp" && current.loadingstate==0 && current.cutscenestate == 0)// memories
+    ||(current.map=="c_hallo_iambulletproof.bsp" && current.loadingstate==0 && current.cutscenestate == 0)// halloween collab
+    ||(current.map=="c_arvuti.bsp" && current.loadingstate==0 && current.cutscenestate == 0)// community collab
+    ||(current.map=="c_the_stairway1.bsp" && current.loadingstate==0)// the stairway
     ||(current.music=="coopstart.mp3"))  
     {
         return true;
@@ -57,13 +58,11 @@ start
 
 reset
 {
-
-    return ((current.map=="c_nightmare.bsp"||current.map=="c_doc_city.bsp")&&old.igt!=0&&current.igt==0)||current.music=="Starting in 3 seconds"||current.map=="c_intro.bsp";//added condition for reset (current.map=="c_intro.bsp")
-
+    return ((current.map=="c_nightmare.bsp"||current.map=="c_doc_city.bsp"||current.map=="c_rumpel1.bsp"||current.map=="c_hallo_iambulletproof.bsp"||current.map=="c_arvuti.bsp"||current.map=="c_the_stairway1.bsp")&&old.igt!=0&&current.igt==0)||current.music=="Starting in 3 seconds"||current.map=="c_intro.bsp";//added condition for reset (current.map=="c_intro.bsp")
 }
 
 isLoading
-{                       
+{    
     return ((current.pausestate !=0)||(current.loadingstate ==0)
     ||(current.cutscenestate !=0&&current.canmove==0)
     ||(current.cutscenestate !=0&&current.map=="c_subway2st3.bsp")//for some reason you gain control during the cutscene
@@ -82,19 +81,19 @@ split//added more conditions for splitting
         if((old.map!=current.map
         &&current.map!="c_trainscene.bsp"
         &&current.map!="c_broscene.bsp"
-		&&current.map!="c_intro.bsp"//new
+        &&current.map!="c_intro.bsp"//new
         &&current.map!="c_game_menu1.bsp"
-		&&current.map!="cof_campaign_01.bsp"//new
-		&&current.map!="c_difficulty_settings.bsp"//new
-		&&current.map!="c_loadgame.bsp"//new
-		&&current.map!=""//new
-		&&old.map!="c_intro.bsp"//new
+        &&current.map!="cof_campaign_01.bsp"//new
+        &&current.map!="c_difficulty_settings.bsp"//new
+        &&current.map!="c_loadgame.bsp"//new
+        &&current.map!=""//new
+        &&old.map!="c_intro.bsp"//new
         &&old.map!="c_game_menu1.bsp"
-		&&old.map!="c_difficulty_settings.bsp"//new
-		&&old.map!="c_loadgame.bsp"//new
-		&&old.map!=""//new
-		&&current.map!="c_nightmare.bsp"//new
-		&&current.map!="c_doc_city.bsp")//new
+        &&old.map!="c_difficulty_settings.bsp"//new
+        &&old.map!="c_loadgame.bsp"//new
+        &&old.map!=""//new
+        &&current.map!="c_nightmare.bsp"//new
+        &&current.map!="c_doc_city.bsp")//new
         &&vars.flag==1
        // &&(current.crashstate!=0&&old.crashstate==0)
         ||(current.music=="endmusic1.mp3")//main campaign the worst ending
@@ -103,7 +102,11 @@ split//added more conditions for splitting
         ||(current.music=="endmusic4.mp3")//main campaign good ending
         ||(current.music=="coopend.mp3")//coop
         ||(current.music=="manhunt.mp3")//manhunt
+        ||(current.music=="lifelover.mp3")//memories
+        ||(current.music=="survive_hotel_terror.mp3")//halloween
+        ||(current.music=="collab_csong.mp3")//community
         ||(current.map=="c_doc_ending.bsp"))//docmode
+        // the stairway uses one of the endmusic mp3s but i just cant be asked to locate which one since it splits anyway
         {
             if(vars.saveflag==1&&vars.flag==1)
             {
@@ -142,6 +145,7 @@ split//added more conditions for splitting
         ||(old.map!="c_cof_city.bsp" && current.map=="c_cof_campaign_01_p4.bsp")//chapter 11 coop
         ||(current.music=="coopend.mp3")//chapter 12 coop
         ||(current.music=="doctorend.mp3")))//docmode
+        // custom campaigns werent accounted for doing chapter splits
         {
             if (vars.saveflag==1)
             {
