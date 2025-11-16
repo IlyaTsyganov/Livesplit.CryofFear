@@ -34,16 +34,23 @@ startup
     vars.saveflag=0;
     vars.campaign=0;
     vars.TimerModel = new TimerModel { CurrentState = timer };
-    settings.Add("Split when entering the level");
-    settings.SetToolTip("Split when entering the level",
-    "Splits each time you enter the different level(c_<level>.bsp) instead of each chapter only");
+    settings.Add("Split on map change");
+    settings.SetToolTip("Split on map change",
+    "Splits whenever the map changes");
+    settings.Add("Split on chapter change");
+    settings.SetToolTip("Split on chapter change",
+    "Splits whenever a chapter is finished");    
     settings.Add("Undo when loading the savefile");
     settings.SetToolTip("Undo when loading the savefile",
     "Undoes as many splits as were made before the loading the savefile (for main campaign only)");
+    settings.CurrentDefaultParent = "Split on map change";
+    settings.Add("Water glitch");
 }
 
 start
 {
+    vars.lakeskip = false;
+    vars.chapter3 = true;
     if((current.map=="c_nightmare.bsp" && current.loadingstate==0)// main campaign
     ||(current.map=="c_doc_city.bsp" && current.loadingstate==0)// doc mode
     ||(current.map=="c_rumpel1.bsp" && current.loadingstate==0 && current.cutscenestate == 0)// memories
@@ -74,13 +81,17 @@ isLoading
     ||(current.alive==0&&current.typeofgame==4072));
 }
 
-split//added more conditions for splitting
+split // added more conditions for splitting
 {
-    if(settings["Split when entering the level"])
+    if (old.map=="c_lake.bsp" && current.map=="c_forestday.bsp")
+    {
+        vars.lakeskip = true;
+    }
+    if(settings["Split on map change"])
     {
         if((old.map!=current.map
         &&current.map!="c_trainscene.bsp"
-        &&current.map!="c_broscene.bsp"
+        &&current.map!="c_broscene.bsp" 
         &&current.map!="c_intro.bsp"//new
         &&current.map!="c_game_menu1.bsp"
         &&current.map!="cof_campaign_01.bsp"//new
@@ -92,8 +103,15 @@ split//added more conditions for splitting
         &&old.map!="c_difficulty_settings.bsp"//new
         &&old.map!="c_loadgame.bsp"//new
         &&old.map!=""//new
+        &&!(settings["Water glitch"] && (current.map=="c_apartment4sick.bsp" || old.map=="c_apartment4sick.bsp"))
+        &&!(vars.lakeskip && current.map=="c_forestday.bsp" && old.map=="c_lake.bsp")
+        &&!(vars.lakeskip && current.map=="c_lake.bsp" && old.map=="c_forestday.bsp")
         &&current.map!="c_nightmare.bsp"//new
-        &&current.map!="c_doc_city.bsp")//new
+        &&current.map!="c_doc_city.bsp"//new
+        &&current.map!="c_rumpel1.bsp"
+        &&current.map!="c_hallo_iambulletproof.bsp"
+        &&current.map!="c_arvuti.bsp"
+        &&current.map!="c_the_stairway1.bsp")
         &&vars.flag==1
        // &&(current.crashstate!=0&&old.crashstate==0)
         ||(current.music=="endmusic1.mp3")//main campaign the worst ending
@@ -121,7 +139,22 @@ split//added more conditions for splitting
             vars.flag=1;
         }
     }
-
+    else if(settings["Split on chapter change"])
+    {
+        if(current.map=="c_buscity2.bsp" && old.map=="c_buscity.bsp")
+        {
+            vars.chapter3 = false;
+        }
+        if((current.map=="c_basement.bsp" && old.map=="c_apartmentsick.bsp") // chapter 2 transition
+        ||(current.map=="c_city.bsp" && old.map=="c_sewer3.bsp") // chapter 3 transition
+        ||vars.chapter3 && (current.map=="c_park2.bsp" && old.map=="c_park3.bsp") // chapter 4 transition
+        ||(current.map=="c_subway2st1.bsp" && old.map=="c_subwaysick2.bsp") // chapter 5 transition
+        ||(current.map=="c_bridge.bsp" && old.map=="c_broscene.bsp") // chapter 6 transition
+        ||(current.map=="c_asylum1day.bsp" && old.map=="c_attic.bsp")) // chapter 7 transition
+        {
+            return true;
+        }
+    }
     else
     {
         if(((old.map=="c_apartmentsick.bsp"&&current.map=="c_basement.bsp")//chapter 1 main campaign
@@ -171,7 +204,7 @@ gameTime
     
     if((current.menu_map=="c_loadgame.bsp"&&current.loadingstate!=0||current.alive==0||current.map==""&&current.loadingstate==0||current.map=="c_game_menu1.bsp")||(current.crashstate!=0&&old.crashstate==0)&&vars.saveflag==1)
     {   
-        if(settings["Split when entering the level"])
+        if(settings["Split on map change"])
         {
             vars.flag=1;
                     if(vars.maps>=0)
