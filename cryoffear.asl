@@ -114,16 +114,16 @@ split // added more conditions for splitting
         &&current.map!="c_the_stairway1.bsp")
         &&vars.flag==1
        // &&(current.crashstate!=0&&old.crashstate==0)
-        ||(current.music=="endmusic1.mp3")//main campaign the worst ending
-        ||(current.music=="endmusic2.mp3")//main campaign bad ending
-        ||(current.music=="endmusic3.mp3")//main campaign bad ending
-        ||(current.music=="endmusic4.mp3")//main campaign good ending
-        ||(current.music=="coopend.mp3")//coop
-        ||(current.music=="manhunt.mp3")//manhunt
-        ||(current.music=="lifelover.mp3")//memories
-        ||(current.music=="survive_hotel_terror.mp3")//halloween
-        ||(current.music=="collab_csong.mp3")//community
-        ||(current.map=="c_doc_ending.bsp"))//docmode
+        ||(current.music=="endmusic1.mp3") // any% ending 1
+        ||(current.music=="endmusic2.mp3") // any% ending 2
+        ||(current.music=="endmusic3.mp3") // any% ending 3
+        ||(current.music=="endmusic4.mp3") // any% ending 4
+        ||(current.music=="coopend.mp3") // coop ending
+        ||(current.music=="manhunt.mp3") // manhunt ending
+        ||(current.music=="lifelover.mp3") //memories
+        ||(current.music=="survive_hotel_terror.mp3") //halloween
+        ||(current.music=="collab_csong.mp3") //community
+        ||(current.map=="c_doc_ending.bsp")) //docmode
         // the stairway uses one of the endmusic mp3s but i just cant be asked to locate which one since it splits anyway
         {
             if(vars.saveflag==1&&vars.flag==1)
@@ -150,43 +150,25 @@ split // added more conditions for splitting
         ||vars.chapter3 && (current.map=="c_park2.bsp" && old.map=="c_park3.bsp") // chapter 4 transition
         ||(current.map=="c_subway2st1.bsp" && old.map=="c_subwaysick2.bsp") // chapter 5 transition
         ||(current.map=="c_bridge.bsp" && old.map=="c_broscene.bsp") // chapter 6 transition
-        ||(current.map=="c_asylum1day.bsp" && old.map=="c_attic.bsp")) // chapter 7 transition
+        ||(current.map=="c_asylum1day.bsp" && old.map=="c_attic.bsp") // chapter 7 transition
+        ||(current.music=="endmusic1.mp3") // any% ending 1
+        ||(current.music=="endmusic2.mp3") // any% ending 2
+        ||(current.music=="endmusic3.mp3") // any% ending 3
+        ||(current.music=="endmusic4.mp3") // any% ending 4
+        ||(old.map=="c_cof_asylumday.bsp" && current.map=="c_cof_campaign_01_p2.bsp") // coop chapter 10 transition
+        ||(old.map=="c_cof_bridge.bsp" && current.map=="c_cof_campaign_01_p3.bsp") // coop chapter 11 transition
+        ||(old.map=="c_cof_city.bsp" && current.map=="c_cof_campaign_01_p4.bsp") // coop chapter 12 transition
+        ||(current.music=="coopend.mp3")) // coop ending 
         {
             return true;
         }
-    }
-    else
-    {
-        if(((old.map=="c_apartmentsick.bsp"&&current.map=="c_basement.bsp")//chapter 1 main campaign
-        ||(current.music=="brandon2.mp3" && old.music!="brandon2.mp3")//chapter 2 main campaign
-        ||(current.music=="crow.mp3" && old.music!="crow.mp3")//chapter 3 main campaign
-        ||(old.map!="c_subwaysick2.bsp" && current.map=="c_subway2st1.bsp")//chapter 4 main campaign
-        ||(old.map!="c_bridge.bsp"&&current.map=="c_bridge.bsp")//chapter 5 main campaign
-        ||(current.music=="ambience/new_chapter.wav"&&old.music!="ambience/new_chapter.wav"&&current.map=="c_attic.bsp")//chapter 6 main campaign
-        ||(current.music=="endmusic1.mp3")//chapter 8 main campaign the worst ending
-        ||(current.music=="endmusic2.mp3")//chapter 8 main campaign bad ending
-        ||(current.music=="endmusic3.mp3")//chapter 8 main campaign bad ending
-        ||(current.music=="endmusic4.mp3")//chapter 7 main campaign good ending 
-        ||(old.map!="c_ending1.bsp" && current.map=="c_ending1b.bsp")//chapter 7 main campaign the worst ending
-        ||(old.map!="c_ending2.bsp" && current.map=="c_ending2b.bsp")//chapter 7 main campaign bad ending
-        ||(old.map!="c_ending3.bsp" && current.map=="c_ending3b.bsp")//chapter 7 main campaign bad ending
-        ||(old.map!="c_cof_street.bsp" && current.map=="c_subway1.bsp")//chapter 1 manhunt
-        ||(old.map!="c_cof_truckride.bsp" && current.map=="c_foresttrail1.bsp")//chapter 2 manhunt
-        ||(current.music=="manhunt.mp3")//chapter 3 manhunt 
-        ||(old.map!="c_cof_asylumday.bsp" && current.map=="c_cof_campaign_01_p2.bsp")//chapter 9 coop
-        ||(old.map!="c_cof_bridge.bsp" && current.map=="c_cof_campaign_01_p3.bsp")//chapter 10 coop
-        ||(old.map!="c_cof_city.bsp" && current.map=="c_cof_campaign_01_p4.bsp")//chapter 11 coop
-        ||(current.music=="coopend.mp3")//chapter 12 coop
-        ||(current.music=="doctorend.mp3")))//docmode
-        // custom campaigns werent accounted for doing chapter splits
         {
             if (vars.saveflag==1)
             {
                 vars.chapters+=1;
 
             }
-            return true;
-        }      
+        } 
     }
 }
 
@@ -222,7 +204,7 @@ gameTime
                     }    
         }
 
-    else
+    else if(settings["Split on chapter change"])
     {
                 if(vars.chapters>=0)
                 {  
