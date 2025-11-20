@@ -154,13 +154,11 @@ split // added more conditions for splitting
         ||(current.music=="endmusic1.mp3") // any% ending 1
         ||(current.music=="endmusic2.mp3") // any% ending 2
         ||(current.music=="endmusic3.mp3") // any% ending 3
-        ||(current.music=="endmusic4.mp3")) // any% ending 4
-        /*
-        ||(old.map!="c_cof_asylumday.bsp" && current.map=="c_cof_campaign_01_p2.bsp") // coop chapter 10 transition
-        ||(old.map!="c_cof_bridge.bsp" && current.map=="c_cof_campaign_01_p3.bsp") // coop chapter 11 transition
-        ||(old.map!="c_cof_city.bsp" && current.map=="c_cof_campaign_01_p4.bsp") // coop chapter 12 transition
+        ||(current.music=="endmusic4.mp3") // any% ending 4
+        ||(old.map=="c_cof_asylumday.bsp" && current.map=="c_cof_campaign_01_p2.bsp") // coop chapter 10 transition
+        ||(old.map=="c_cof_bridge.bsp" && current.map=="c_cof_campaign_01_p3.bsp") // coop chapter 11 transition
+        ||(old.map=="c_cof_city.bsp" && current.map=="c_cof_campaign_01_p4.bsp") // coop chapter 12 transition
         ||(current.music=="coopend.mp3")) // coop ending 
-        */
         {
             return true;
         }
