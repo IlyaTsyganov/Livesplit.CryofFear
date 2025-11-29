@@ -160,14 +160,11 @@ split // added more conditions for splitting
         ||(old.map=="c_cof_city.bsp" && current.map=="c_cof_campaign_01_p4.bsp") // coop chapter 12 transition
         ||(current.music=="coopend.mp3")) // coop ending 
         {
-            return true;
-        }
-        {
             if (vars.saveflag==1)
             {
                 vars.chapters+=1;
-
             }
+            return true;
         } 
     }
 }
@@ -230,3 +227,4 @@ gameTime
     }
 
 }
+
